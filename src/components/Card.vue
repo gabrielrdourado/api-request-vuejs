@@ -38,18 +38,21 @@
                         </div>
                     </div> 
                     <div class="row"> 
-                        <div class="col-12 detalhes">  
-                            
+                        <div class="col-12 detalhes">
+                            <p>
+                                <i class="fas fa-key"></i>
+                                Apartamentos de {{ printArray(produto.units.usable_areas) }} m²
+                            </p>
                         </div>
-                        <div class="col-12 detalhes" v-if="(Array.isArray(produto.units.en_suites) && produto.units.en_suites.length > 0) || (!Array.isArray(produto.units.en_suites) && produto.units.en_suites != null)">                              
+                        <div class="col-12 detalhes" v-if="(Array.isArray(produto.units.en_suites) && produto.units.en_suites.length > 0 && !verificaAreaZero(produto.units.en_suites)) || (!Array.isArray(produto.units.en_suites) && produto.units.en_suites != null && produto.units.en_suites > 0)">                              
                             <p>
                                 <i class="fas fa-bed"></i>
-                                {{ printSuites(produto.units.en_suites) }} suítes
+                                {{ printArray(produto.units.en_suites) }} suítes
                             </p>
                         </div>                        
                         <div class="col-12 detalhes" v-if="produto.address.geo_location.latitude <= -21.211 && produto.address.geo_location.latitude >= -21.269 && produto.address.geo_location.longitude <= -47.780 && produto.address.geo_location.longitude >= -47.857">  
                             <p>
-                                <i class="fas fa-key"></i> 
+                                <i class="fas fa-map-marker-alt"></i>
                                  Localização privilegiada
                             </p>
                         </div>
@@ -74,14 +77,20 @@ export default {
         index: Number
     },
     methods: {
-        printSuites(u){
+        verificaAreaZero(u){
+            u.forEach(element => {
+                if(element < 1 ){
+                    return true
+                }
+            })
+        },
+
+        printArray(u){
             var txtSuites = " ";
 
-            if (Array.isArray(u)){
-                console.log(u, u.length, (u.length-1))
+            if (Array.isArray(u)){                
                 if (u.length <= 2) {
                     u.forEach((element, chave) => {
-                        // console.log(u.length, chave, element);
                         if((u.length-1) == chave && element > 0){                
                             txtSuites = (txtSuites + element + " ")
                         } else if(element > 0){
@@ -90,7 +99,6 @@ export default {
                     });  
                 } else {
                     u.forEach((element, chave) => {
-                        // console.log(u.length, chave, element);
                         if((u.length-1) == chave && element > 0){                
                             txtSuites = (txtSuites + element + " ")
                         } else if(element > 0){
@@ -106,28 +114,9 @@ export default {
         }
     },
     computed: {
-        // printSuites: function(u){
-        //     var txtSuites;
-
-        //     u.forEach(element => {
-        //         console.log(element)
-        //         element = (txtSuites + element + ", ")
-        //     });
-
-        //     return txtSuites;
-        // }
+        
     }
 };
-
-// function printSuites(u){
-//     var txtSuites;
-
-//     array.forEach(element => {
-//         element = (txtSuites + element + ", ")
-//     });
-
-//     return txtSuites;
-// }
 </script>
 
 <style scoped>
@@ -138,7 +127,7 @@ export default {
     min-height: 100%;
     padding: 30px 30px;
     position: relative;
-    min-height: 268px;
+    min-height: 320px;
     margin-top: -15px;
 }
 
@@ -156,7 +145,7 @@ export default {
 }
 
 .card-product .distrito {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
 }
 
 .card-product .detalhes>p {
@@ -168,6 +157,7 @@ export default {
 
 .card-product .detalhes>p>i {
     color: #ed7203;
+    margin-right: 3px;
 }
 
 .card-product .button-cta {

@@ -1,6 +1,6 @@
 <template>
   <div id="app">   
-    <h1 style="margin-bottom: 50px; font-weight: 800;">Empreendimentos</h1>     
+    <h1 class="mt-3 mb-4" style="font-weight: 800;">Empreendimentos</h1>     
     <br>
     <div class="container">
       <div class="row justify-content-center">
@@ -33,38 +33,42 @@ export default {
       this.produtos = resposta.data.products
     })
   },
-   computed: {
-        produtosValidos: function() {
-            return this.produtos.filter(function(u) {
-                // if(u.address.geo_location && u.address.geo_location.latitude != null && u.address.geo_location.longitude != null && validarArea(u.units.usable_areas)==1){
-                if(u.address.geo_location && u.address.geo_location.latitude != null && u.address.geo_location.longitude != null){  
-                    // console.log(u.name, validarArea(u.units.usable_areas), u.units.usable_areas)
-                    return u
-                }
-            })
-        }       
-    }
+  methods: {
+
+  },
+  computed: {
+    produtosValidos: function() {
+      return this.produtos.filter(function(u) {
+        if(u.address.geo_location && u.address.geo_location.latitude != null && u.address.geo_location.longitude != null && validarArea(u.units.usable_areas)==1){          
+          return u
+        }
+      })
+    }       
+  }
 }
 
-// function validarArea (arrayNumeros) {
-//     if(typeof arrayNumeros == "object"){
-//         arrayNumeros.forEach(element => {
-//             if(element <= 10){
-                
-//                 // console.log(false, element);
-                
-//             }                
-//         });  
-//         return 0;              
-//     }   
-//     else if(arrayNumeros <= 10){
-//         return 0;
-//     } 
-//     else {
-//         // return true;
-//     }
-//     return 1;
-// }
+function validarArea(arrayNumeros) {
+  var elementoMenor = false;
+  if(typeof arrayNumeros == "object"){
+
+    arrayNumeros.forEach(element => {
+      if(element < 11){ 
+        elementoMenor = true;
+      }   
+    });
+    
+    if (elementoMenor){
+      return 0
+    }
+    return 1;              
+  }   
+  else if(arrayNumeros <= 10){
+    return 0;
+  } 
+  else {
+    return 1;
+  }
+}
 </script>
 
 <style>
