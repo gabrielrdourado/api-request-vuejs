@@ -4,15 +4,11 @@
             <div class="col-12">
                 <div v-bind:id="'carousel-' + index" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
-                        <li :data-target="'#carousel-' + index" data-slide-to="0" class="active"></li>
-                        <li :data-target="'#carousel-' + index" data-slide-to="1"></li>
+                        <li :data-target="'#carousel-' + index" :data-slide-to="indexImagem" v-bind:class="{ active: indexImagem==0 }" v-for="(photos, indexImagem) of produto.photos " :key="indexImagem"></li>
                     </ol>
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img :src="require('../assets/teste/a.jpg')" class="d-block w-100" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img :src="require('../assets/teste/b.jpg')" class="d-block w-100" alt="...">
+                        <div class="carousel-item " v-bind:class="{ active: indexImagem==0 }" v-for="(photos, indexImagem) of produto.photos " :key="indexImagem">
+                            <img :src="(photos)" class="d-block w-100" alt="...">
                         </div>
                     </div>
                 </div>
@@ -180,7 +176,17 @@ export default {
     border-radius: 50%;
     width: 8px;
     height: 8px;
-    box-shadow: 1px 1px 5px 2px rgb(0 0 0 / 30%);
+}
+
+.carousel-item img{
+    height: 143px;
+    width: 100%;
+}
+
+@media (max-width: 1199px){
+    .carousel-item img{
+        height: 160px;
+    }
 }
 
 </style>
